@@ -1,0 +1,90 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Sep  2 21:05:09 2019
+
+@author: rahul
+"""
+
+from sklearn import datasets
+from keras.utils import to_categorical
+from keras.layers import Dense
+from keras.models import Sequential
+from keras.callbacks import EarlyStopping
+import matplotlib.pyplot as plt
+
+# load dataset
+
+x = datasets.load_digits()['data']
+y = to_categorical(datasets.load_digits()['target'])
+
+
+# instantiate model
+
+model = Sequential()
+
+# add first hidden layers
+
+model.add(Dense(100, activation='relu', input_shape=(x.shape[1],)))
+
+# add second hidden layer
+
+model.add(Dense(50, activation='relu'))
+
+# output layer
+
+model.add(Dense(10, activation='softmax'))
+
+# compile model
+
+model.compile(optimizer='sgd', loss='categorical_crossentropy', metrics=['accuracy'])
+
+# fit model
+
+model_1 = model.fit(x,y, epochs=30, validation_split=0.3, callbacks=[EarlyStopping(patience=3)])
+
+
+# THIS IS TRAINING LOSS AND ACCURACY
+
+
+# plot validation loss (the lesser the better)
+
+plt.plot(model_1.history['loss'], marker='o', c='b')
+plt.plot(model_1.history['val_loss'], marker='x', c='r')
+plt.xlabel('epochs')
+plt.ylabel('loss')
+plt.legend(['Training loss', 'Validation loss'])
+plt.title('Decrease in loss per epochs')
+plt.show()
+
+# print summary
+
+print('Summary ')
+
+print(' Validation loss - ', round(model_1.history['val_loss'][-1] * 100, ndigits=1))
+print(' Training loss - ', round(model_1.history['loss'][-1] * 100, ndigits=1))
+
+print('Number of epocs - ' , len(model_1.history['acc']))
+
+
+
+# plot accuracy increase with every epoc
+
+plt.plot(model_1.history['acc'], c='b', marker='o')
+plt.plot(model_1.history['val_acc'], c='r', marker='*')
+plt.xlabel('epochs')
+plt.ylabel('Accuracy score')
+plt.title('Accuracy increase with per epoch')
+plt.legend(['Training accuracy', 'Validation accuracy'])
+plt.show()
+
+# print summary
+
+print('Training accuracy - ', round(model_1.history['acc'][-1] * 100, ndigits=1))
+print('Validation accuracy - ', round(model_1.history['val_acc'][-1] * 100, ndigits=1))
+
+
+
+
+
+

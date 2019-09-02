@@ -1,0 +1,84 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Sat Aug 31 18:57:51 2019
+
+@author: rahul
+"""
+
+import numpy as np
+import keras
+from keras.layers import Dense
+from keras.models import Sequential
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from keras.utils import to_categorical
+
+
+
+data = load_iris()['data']
+
+
+target = to_categorical(load_iris()['target'])
+
+
+
+train_x, test_x, train_y, test_y = train_test_split(data, target, test_size=.4)
+
+n_cols = 4
+
+#initialize model
+model = Sequential()
+
+#create network
+#create first layer
+
+model.add(Dense(100, activation='relu', input_shape=(n_cols, )))
+
+#create second layer
+
+model.add(Dense(50, activation='relu'))
+
+
+#create output
+
+model.add(Dense(3, activation='softmax'))
+
+#compile model2
+
+model.compile(optimizer='sgd', loss='categorical_crossentropy', metrics=['accuracy'])
+
+#fit model
+
+model.fit(train_x, train_y, epochs=50)
+
+
+
+
+
+
+
+
+
+'''
+import numpy as np
+
+input_data = np.array([2,3])
+
+weights = {
+        'node_0' : np.array([1,1]),
+        'node_1' : np.array([-1,1]),
+        'output' : np.array([2,-1])
+        }
+
+node_0_value = (input_data * weights['node_0']).sum()
+node_0_value = np.array(node_0_value)
+
+node_1_value = (input_data * weights['node_1']).sum()
+node_1_value = np.tanh(node_1_value)
+
+hidden_layer_outputs = np.array([node_0_value , node_1_value])
+
+output = (hidden_layer_outputs * weights['output']).sum()
+
+'''
