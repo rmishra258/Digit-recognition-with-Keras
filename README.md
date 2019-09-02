@@ -12,5 +12,5 @@ keras.callbacks EarlyStopping
 
 And graphs displaying Training and Validation loss and accuracy
 
-Please condier giving a star on top right of your screen if you find this helpful
+Please consider giving a star on top right of your screen if you find this helpful
 
